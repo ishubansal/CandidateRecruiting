@@ -1,0 +1,111 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="PipelineViewerController">
+    <aura:attribute name="data" type="List"/>
+    <aura:attribute name="steps" type="List"/>
+    <aura:attribute name="locationVal" type="String"/>
+    <aura:attribute name="disciplineVal" type="String"/>
+    <aura:attribute name="specialtyVal" type="String"/>
+    <aura:attribute name="locationList" type="List"/>
+    <aura:attribute name="disciplinelist" type="List"/>
+    <aura:attribute name="specialtyList" type="List"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div style="background-color:white;">
+        <div class="c-container">
+            <lightning:layout horizontalAlign="spread">
+                <lightning:layoutItem padding="around-small">
+                    <div class="custom-box">
+                        <lightning:select value="{!v.locationVal}" label="Pipeline Location" onchange="{!c.doInit}">       
+                            <option value="All">All</option> 
+                            <aura:iteration items="{!v.locationList}" var="location">
+                                <option value="{!location}">{!location}</option>
+                            </aura:iteration> 
+                        </lightning:select> 
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small">
+                    <div class="custom-box">
+                        <lightning:select value="{!v.disciplineVal}" label="Discipline" onchange="{!c.doInit}">       
+                            <option value="All">All</option> 
+                            <aura:iteration items="{!v.disciplinelist}" var="discipline">
+                                <option value="{!discipline}">{!discipline}</option>
+                            </aura:iteration> 
+                        </lightning:select>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small">
+                    <div class="custom-box">
+                        <lightning:select value="{!v.specialtyVal}" label="Specialty" onchange="{!c.doInit}">       
+                            <option value="All">All</option> 
+                            <aura:iteration items="{!v.specialtyList}" var="specialty">
+                                <option value="{!specialty}">{!specialty}</option>
+                            </aura:iteration> 
+                        </lightning:select> 
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small">
+                    <div class="custom-box">
+                        
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small">
+                    <div class="custom-box">
+                        
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+        </div>
+        
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-label="Example default base table of Opportunities">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Location">Location</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Discipline">Discipline</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Specialty">Specialty</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="candidates needed">Pipeline Needed</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="# of pipelined candidates needed"># of pipelined candidates</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration items="{!v.data}" var="d">
+                    <tr class="slds-hint-parent">
+                        <td data-label="Location" scope="row">
+                            <div class="slds-truncate" title="{!d.cc.Client__c}">{!d.cc.Client__c}</div>
+                        </td>
+                        <td data-label="Discipline">
+                            <div class="slds-truncate" title="{!d.cc.Discipline__c}">{!d.cc.Discipline__c}</div>
+                        </td>
+                        <td data-label="Specialty">
+                            <div class="slds-truncate" title="{!d.cc.Specialty__c}">{!d.cc.Specialty__c}</div>
+                        </td>
+                        <td data-label="pipelined candidates needed">
+                            <div class="slds-truncate" title="{!d.cc.No_of_pipelined_candidatess__c}">{!d.cc.No_of_pipelined_candidatess__c}</div>
+                        </td>
+                        <td data-label="# of pipelined candidates needed">
+                            <aura:iteration items="{!d.steps}" var="step">
+                                <aura:if isTrue="{!step.Label == ''}">
+                                    <lightning:badge label="N/A" icon="Standard:first_non_empty" class="slds-theme_error"/>
+                                    <aura:set attribute="else">
+                                        <a href="{!'https://msgstaffing--jobassign.sandbox.lightning.force.com/' + step.Value}" target="_new"> 
+                                            <lightning:badge label="{!step.Label}" class="slds-theme_success"/>
+                                        </a>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:iteration>
+                        </td>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+</aura:component>
